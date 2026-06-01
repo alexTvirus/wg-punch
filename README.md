@@ -112,7 +112,9 @@ Start `peer-hub` server:
 ```Bash
 $ 
 ```
+which go
 
+sudo go run cmd/peerA/peer-a.go 
 Start peer A node: 
 ```Bash
 $ go run cmd/peerA/peer-a.go 
