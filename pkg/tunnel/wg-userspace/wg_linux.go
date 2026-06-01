@@ -7,11 +7,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/go-logr/logr"
 	"github.com/vishvananda/netlink"
 	"golang.zx2c4.com/wireguard/tun"
-
-	"github.com/yago-123/wg-punch/pkg/tunnel"
 )
 
 // ensureTunInterfaceExists creates and brings up a TUN interface on Linux

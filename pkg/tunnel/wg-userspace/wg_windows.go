@@ -6,13 +6,12 @@ package userspacewg
 import (
 	"fmt"
 	"os/exec"
-	"strings"
 
 	"golang.zx2c4.com/wireguard/tun"
 )
 
 // ensureTunInterfaceExists creates and brings up a TUN interface on Windows
-// Uses the Wintun driver which is cross-platform compatible
+// Uses the Wintun driver which is included with golang.zx2c4.com/wireguard
 func (u *userspaceWGTunnel) ensureTunInterfaceExists(iface string) (tun.Device, error) {
 	u.logger.Info("Creating TUN interface on Windows", "iface", iface)
 

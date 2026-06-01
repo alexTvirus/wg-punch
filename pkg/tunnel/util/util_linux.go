@@ -11,8 +11,7 @@ import (
 	"github.com/vishvananda/netlink"
 )
 
-// AssignAddressToIface assigns the internal IP address to the WireGuard interface in CIDR notation in order to allow
-// communications between peers (Linux implementation)
+// AssignAddressToIface assigns the internal IP address to the WireGuard interface in CIDR notation (Linux implementation)
 func AssignAddressToIface(iface, addrCIDR string) error {
 	// Lookup interface link by name
 	link, err := netlink.LinkByName(iface)
