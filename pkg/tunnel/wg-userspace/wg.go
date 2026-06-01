@@ -11,7 +11,6 @@ import (
 	"golang.zx2c4.com/wireguard/wgctrl/wgtypes"
 
 	"github.com/go-logr/logr"
-	"github.com/vishvananda/netlink"
 
 	"github.com/yago-123/wg-punch/pkg/peer"
 	"github.com/yago-123/wg-punch/pkg/tunnel"
@@ -162,45 +161,6 @@ func (u *userspaceWGTunnel) Stop(_ context.Context) error {
 
 	// todo(): handle iface link deletion
 	return nil
-}
-
-func (u *userspaceWGTunnel) ensureTunInterfaceExists(iface string) (tun.Device, error) {
-	// if !u.config.CreateIface {
-	// 	return nil, fmt.Errorf("TUN interface creation is disabled")
-	// }
-
-	// Try to delete the existing interface (optional safety)
-	// todo(): this is like this just for testing, remove it later
-	link, err := netlink.LinkByName(iface)
-	if err == nil {
-		u.logger.Info("Deleting pre-existing interface", "iface", iface)
-		_ = netlink.LinkDel(link) // ignore error — best effort
-	}
-
-	// Only proceed if the interface is truly missing
-	// todo(): improve error handling
-	if !strings.Contains(err.Error(), "Link not found") {
-		return nil, fmt.Errorf("error checking interface %s: %w", iface, err)
-	}
-
-	// Now create it cleanly
-	tunDev, err := tun.CreateTUN(iface, DefaultNetMTU)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create TUN interface %s: %w", iface, err)
-	}
-
-	link, err = netlink.LinkByName(iface)
-	if err != nil {
-		return nil, fmt.Errorf("failed to lookup interface %s: %w", iface, err)
-	}
-
-	// Set the interface up
-	if errSetup := netlink.LinkSetUp(link); errSetup != nil {
-		return nil, fmt.Errorf("failed to bring interface %s up: %w", iface, errSetup)
-	}
-
-	u.logger.Info("Created TUN interface", "iface", iface)
-	return tunDev, nil
 }
 
 // waitForHandshake waits for the handshake to complete with the given public key
